@@ -16,6 +16,24 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
   double height = 183;
   int weight = 74;
   int age = 30;
+  double bmi = 0;
+
+  double calculateBMI({required int weight,required double height}) {
+    return weight / ((height / 100) * (height / 100));
+  }
+
+  Color getBMIColor(double bmi) {
+    if (bmi < 18.5) {
+      return Colors.blue; // Underweight
+    } else if (bmi < 25) {
+      return Colors.green; // Normal weight
+    } else if (bmi < 30) {
+      return Colors.orange; // Overweight
+    } else {
+      return Colors.red; // Obesity
+    }
+
+  }
    static const Color kBackgroundColor = Color(0xFF0A0E21);
   @override
   Widget build(BuildContext context) {
@@ -31,7 +49,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
         title: const Text("BMI Calculator"),
         centerTitle: true,
       ),
-      body:Container(
+      body:SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -50,6 +68,10 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                             setState(() {
                               isMale = true;
                             });
+                            var bmiValue = calculateBMI(weight:weight, height:height);
+                              setState(() {
+                                bmi = bmiValue;
+                              });
                           },
                           child: Container(                                             
                             padding: const EdgeInsets.all(20),
@@ -78,6 +100,10 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                             setState(() {
                               isMale = false;
                             });
+                            var bmiValue = calculateBMI(weight:weight, height:height);
+                              setState(() {
+                                bmi = bmiValue;
+                              });
                           },
                           child: Container(
                             decoration:!isMale 
@@ -101,7 +127,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                       ),                                 
                     ],
                   ),
-                  const SizedBox(height: 25,),
+                  const SizedBox(height: 20,),
                   Container(
                     decoration: kTileBorderDecoration,
                     padding: const EdgeInsets.all(20),
@@ -133,6 +159,10 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                             setState(() {
                               height = value;
                             });
+                            var bmiValue = calculateBMI(weight:weight, height:height);
+                              setState(() {
+                                bmi = bmiValue;
+                              });
                           },
                           thumbColor: kButtonColor,
                           activeColor: Colors.white,
@@ -142,7 +172,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                       ],      
                     ),
                   ),
-                  const SizedBox(height: 25,),
+                  const SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -156,7 +186,7 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                               style: TextStyle(color: kActiveTextColor),),
                               Text("$weight",
                               style:const TextStyle(fontSize: 50,fontWeight: FontWeight.bold,color: kActiveTextColor),),
-                              Text("kg",style: TextStyle(color: kActiveTextColor),),
+                              // Text("kg",style: TextStyle(color: kActiveTextColor),),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -170,8 +200,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       0.5
                                      ),
                                     onPressed: (){
-                                      setState(() {
+                                      
                                         if( weight > 25) {weight--;}                                     
+                                     
+                                      var bmiValue = calculateBMI(weight:weight, height:height);
+                                      setState(() {
+                                        bmi = bmiValue;
                                       });
                                     } ,
                                     child: Icon(Icons.remove,color: kScaleButtonColor),
@@ -186,8 +220,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       0.5
                                      ),
                                     onPressed: (){
-                                      setState(() {
+                                      
                                           if( weight < 250) {weight++;}    
+                                   
+                                      var bmiValue = calculateBMI(weight:weight, height:height);
+                                      setState(() {
+                                        bmi = bmiValue;
                                       });
                                     } ,
                                     child: Icon(Icons.add,color: kScaleButtonColor),
@@ -213,16 +251,23 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                   FloatingActionButton(
                                     backgroundColor: kBackgroundColor,
                                     elevation: 0,
+                                    // materialTapTargetSize: 500px,
                                     shape: ShapeBorder.lerp(
                                       const CircleBorder(), 
                                       const CircleBorder(),
                                       0.5
                                      ),
                                     onPressed: (){
-                                      setState(() {
+                                      
                                         if( age > 10) {age--;}                                     
+                                   
+                      
+                                      var bmiValue = calculateBMI(weight:weight, height:height);
+                                      setState(() {
+                                        bmi = bmiValue;
                                       });
                                     } ,
+                                   
                                     child: Icon(Icons.remove,color: kScaleButtonColor,),
                                   ),
                                   const SizedBox(width: 10,),
@@ -234,10 +279,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       CircleBorder(),
                                       0.5
                                      ),
-                                    onPressed: (){
+                                    onPressed: (){                                   
+                                          if( age < 100) {age++;}                                        
+                                      var bmiValue = calculateBMI(weight:weight, height:height);
                                       setState(() {
-                                          if( age < 150) {age++;}    
-                                      });
+                                        bmi = bmiValue;
+                                      });///this
                                     } ,
                                     child: Icon(Icons.add, color: kScaleButtonColor,),
                                   ),
@@ -251,24 +298,32 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
               ]            
               ),
             ),
-            const SizedBox(height: 25,),
-            Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: kButtonColor,
-                      shape: const RoundedRectangleBorder(),
-                      maximumSize: const Size(double.infinity, 80),
-                    ),
-                    onPressed: () {}, 
-                    child: const Text("Calculate BMI",style: TextStyle(fontSize: 20,color: kActiveTextColor),),
-                    
+           
+            Container(
+              decoration: kTileBorderDecoration,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Text("Your BMI",
+                    style: TextStyle(
+                      color: kActiveTextColor,
+                      fontSize: 24,
+                    )
                   ),
-                ),
-              ],
+                  Text(
+                   bmi.toStringAsFixed(1),
+                    style: TextStyle(
+                      color: getBMIColor(bmi),
+                      fontSize: 50,fontWeight: FontWeight.bold
+                    ),
+                  )
+                ],
+              )
+            
+      
             ),
+        
+            
           ],       
         ),
       )
