@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:my_first_app/bmi_calculator.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const  BMICalculatorApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class BMICalculatorApp extends StatelessWidget {
+  const BMICalculatorApp({super.key});
 
   // This widget is the root of your application.
   @override
