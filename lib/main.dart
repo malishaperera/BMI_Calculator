@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_first_app/bmi_calculator.dart';
 
 void main() {
-  runApp(const  BMICalculatorApp());
+  runApp(const BMICalculatorApp());
 }
 
 class BMICalculatorApp extends StatelessWidget {
